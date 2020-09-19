@@ -2,6 +2,8 @@ package com.xkcoding.log.aop.controller;
 
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
+import com.xkcoding.log.aop.annotation.Log;
+import com.xkcoding.log.aop.domain.User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,8 +30,20 @@ public class TestController {
 	 * @return {@link Dict}
 	 */
 	@GetMapping("/test")
+    @Log("执行方法二")
 	public Dict test(String who) {
 		return Dict.create().set("who", StrUtil.isBlank(who) ? "me" : who);
 	}
+
+
+    @Log(value = "#who.id")
+    //@CachePut(value = "user", key = "#user.id")
+    public String test3(User who) {
+        if(who == null || who.getName() == null) {
+            return who.getName();
+        } else  {
+            return "none";
+        }
+    }
 
 }
